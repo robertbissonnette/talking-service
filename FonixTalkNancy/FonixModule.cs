@@ -21,10 +21,10 @@ namespace FonixTalkNancy
                 using (var talkEngine = new FonixTalkEngine())
                 {
                     var ms = new MemoryStream();
-                    string rawText = Request.Query.text;
+                    string encodedText = Request.Query.text;
+                    string rawText = HttpUtility.UrlDecode(encodedText).Replace(' ', '+');
                     var rawBytes = Convert.FromBase64String(rawText);
-                    string encodedText = Encoding.UTF8.GetString(rawBytes);
-                    string text = HttpUtility.UrlDecode(encodedText);
+                    string text = Encoding.UTF8.GetString(rawBytes);
 
                     talkEngine.SpeakToWavStream(ms, text);
                     ms.Position = 0;
